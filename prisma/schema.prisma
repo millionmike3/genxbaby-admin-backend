@@ -58,7 +58,7 @@ enum UserStatus {
   PENDING
   SUSPENDED
   DISABLED
-}F
+}
 
 enum InvestorAction {
   QUOTE_REQUEST
@@ -461,6 +461,8 @@ model Application {
   BorrowerDocument     BorrowerDocument[]
   documentRequirements DocumentRequirement[]
   pipelineOutput       UnderwritingPipelineOutput? @relation(fields: [underwritingPipelineOutputId], references: [id])
+
+  underwritingAudit    UnderwritingAudit[]
 
   servicingRecord     ServicingRecord?
   loanServicingEvents LoanServicingEvent[]
@@ -3532,4 +3534,14 @@ model Session {
   revoked       Boolean  @default(false)
 
   user          User     @relation(fields: [userId], references: [id])
+}
+model UnderwritingAudit {
+  id            String   @id @default(uuid())
+  applicationId String
+  adminId       String   
+  action        String
+  notes         String?
+  createdAt     DateTime @default(now())
+
+  application   Application @relation(fields: [applicationId], references: [id])
 }
