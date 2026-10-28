@@ -1,12 +1,11 @@
 import { Router } from "express";
-import { getPrisma } from "@/lib/prisma";
+import { PrismaClient } from "@prisma/client";
 
+const prisma = new PrismaClient();
 const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const prisma = await getPrisma();
-
     const notifications = await prisma.adminNotification.findMany({
       orderBy: { createdAt: "desc" },
       take: 200,
